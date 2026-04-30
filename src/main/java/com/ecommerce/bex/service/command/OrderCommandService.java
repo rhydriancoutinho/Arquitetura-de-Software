@@ -85,7 +85,7 @@ public class OrderCommandService {
 
     @CacheEvict(value = {"orders", "user-orders"}, key = "#command.orderId()")
     public void updateOrderStatus(UpdateOrderStatusCommand command){
-        Order order = orderRepository.findById(command.orderId()).orElseThrow();
+        Order order = orderRepository.findById(command.orderId()).orElseThrow(OrderNotFoundException::new);
         OrderStatus oldStatus = order.getStatus();
         order.nextStatus();
         orderRepository.save(order);
